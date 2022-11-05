@@ -1,0 +1,14 @@
+{
+  "domain": "bedroom_node",
+  "name": "Bedroom Node",
+  "integration_type": "device",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/bedroom_node",
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": ["@louisfellows"],
+  "iot_class": "local_push"
+}
