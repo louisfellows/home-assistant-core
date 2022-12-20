@@ -232,7 +232,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
         return item.get("track_number")
 
     @property
-    def media_playlist(self):
+    def media_playlist(self) -> str | None:
         """Title of Playlist currently playing."""
         if self._playlist is None:
             return None
@@ -258,7 +258,7 @@ class SpotifyMediaPlayer(MediaPlayerEntity):
         return self._currently_playing.get("shuffle_state")
 
     @property
-    def repeat(self) -> str | None:
+    def repeat(self) -> RepeatMode | None:
         """Return current repeat mode."""
         if (
             not self._currently_playing

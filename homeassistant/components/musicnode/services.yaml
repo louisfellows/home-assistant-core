@@ -1,0 +1,96 @@
+# synology-dsm service entries description.
+
+update:
+  name: Music Update
+  description: Update when the current music state changes.
+  fields:
+    entity_id:
+      name: Entity ID
+      description: The entity that has updated
+      required: true
+      advanced: false
+      example: media_player.spotify
+      selector:
+        text:
+          multiline: false
+    friendly_entity:
+      name: Friendly Entity Name
+      description: A Friendly version of the entity name
+      required: false
+      advanced: false
+      example: Spotify
+      selector:
+        text:
+          multiline: false
+    old_state:
+      name: Old State
+      description: The old state.
+      required: false
+      advanced: true
+      example: playing
+      selector:
+        text:
+          multiline: false
+    old_title:
+      name: Old State - Media Title
+      description: The old state of the Media Title.
+      required: false
+      advanced: true
+      example: The Unicorn Invasion of Dundee
+      selector:
+        text:
+          multiline: false
+    old_artist:
+      name: Old State - Media Artist
+      description: The old state of the Media Artist.
+      required: false
+      advanced: true
+      example: Gloryhammer
+      selector:
+        text:
+          multiline: false
+    old_album:
+      name: Old State - Media Album
+      description: The old state of the Media Album.
+      required: false
+      advanced: true
+      example: Tales from the Kingdom of Fife
+      selector:
+        text:
+          multiline: false
+    new_state:
+      name: New State
+      description: The new state.
+      required: true
+      advanced: false
+      example: playing
+      selector:
+        text:
+          multiline: false
+    new_title:
+      name: New State - Media Title
+      description: The New state of the Media Title.
+      required: true
+      advanced: false
+      example: Rex Regi Rebellis
+      selector:
+        text:
+          multiline: false
+    new_artist:
+      name: New State - Media Artist
+      description: The New state of the Media Artist.
+      required: true
+      advanced: false
+      example: Turisas
+      selector:
+        text:
+          multiline: false
+    new_album:
+      name: New State - Media Album
+      description: The New state of the Media Album.
+      required: true
+      advanced: false
+      example: Battle Metal
+      selector:
+        text:
+          multiline: false

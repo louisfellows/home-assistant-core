@@ -263,6 +263,7 @@ FLOWS = {
         "motioneye",
         "mqtt",
         "mullvad",
+        "musicnode",
         "mutesync",
         "myq",
         "mysensors",

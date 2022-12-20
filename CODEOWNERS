@@ -736,6 +736,8 @@ build.json @home-assistant/supervisor
 /homeassistant/components/msteams/ @peroyvind
 /homeassistant/components/mullvad/ @meichthys
 /tests/components/mullvad/ @meichthys
+/homeassistant/components/musicnode/ @louisfellows
+/tests/components/musicnode/ @louisfellows
 /homeassistant/components/mutesync/ @currentoor
 /tests/components/mutesync/ @currentoor
 /homeassistant/components/my/ @home-assistant/core
