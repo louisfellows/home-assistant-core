@@ -179,7 +179,7 @@ class CombinedMediaDevice(MediaPlayerEntity):
             self._current_player = highest_state_player
 
     def _get_state_from_string(self, value: str) -> MediaPlayerState:
-        if STRING_TO_STATE[value] is not None:
+        if value in STRING_TO_STATE:
             return STRING_TO_STATE[value]
 
         return MediaPlayerState.OFF

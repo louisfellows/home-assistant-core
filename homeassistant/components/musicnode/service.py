@@ -48,7 +48,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             },
         }
 
-        await hass.async_add_executor_job(api.async_send_screen_update, request)
+        await hass.async_add_executor_job(api.async_send_media_update, request)
 
     for service in SERVICES:
         hass.services.async_register(DOMAIN, service, service_handler)
