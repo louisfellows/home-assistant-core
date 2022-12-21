@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import logging
 
-import requests
-
 from homeassistant.core import HomeAssistant, ServiceCall
 
 from .const import (
@@ -31,6 +29,8 @@ async def async_setup_services(hass: HomeAssistant) -> None:
     async def service_handler(call: ServiceCall) -> None:
         """Handle service call."""
 
+        api = hass.data[DOMAIN]["API"]
+
         request = {
             "entityId": call.data[CONF_ENTITY_ID],
             "friendlyName": call.data[CONF_FRIENDLY_ENTITY],
@@ -48,15 +48,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             },
         }
 
-        await hass.async_add_executor_job(
-            async_send_screen_update, "http://musicnode.home:7887", request
-        )
+        await hass.async_add_executor_job(api.async_send_screen_update, request)
 
     for service in SERVICES:
         hass.services.async_register(DOMAIN, service, service_handler)
-
-
-def async_send_screen_update(host: str, request: dict):
-    """Send the thing."""
-    api_response = requests.put(f"{host}/state", json=request, timeout=5000)
-    return api_response.ok

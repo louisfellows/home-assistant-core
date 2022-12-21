@@ -90,6 +90,17 @@ STATES_ORDER = [
 ]
 STATES_ORDER_LOOKUP = {state: idx for idx, state in enumerate(STATES_ORDER)}
 STATES_ORDER_IDLE = STATES_ORDER_LOOKUP[MediaPlayerState.IDLE]
+
+STRING_TO_STATE = {
+    "off": MediaPlayerState.OFF,
+    "idle": MediaPlayerState.IDLE,
+    "standby": MediaPlayerState.STANDBY,
+    "on": MediaPlayerState.ON,
+    "paused": MediaPlayerState.PAUSED,
+    "buffering": MediaPlayerState.BUFFERING,
+    "playing": MediaPlayerState.PLAYING,
+}
+
 VOLUME_RANGES = {
     "media_player.spotify_louis": [75, 100],
     "media_player.musicnode": [0, 25],
@@ -102,16 +113,14 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
-    """Set up the MPD platform."""
+    """Set up the platform."""
     # host = config.get(CONF_HOST)
     entities = ["media_player.spotify_louis", "media_player.musicnode"]
-
-    entity = CombinedMediaDevice(hass, entities)
-    async_add_entities([entity], True)
+    async_add_entities([CombinedMediaDevice(hass, entities)], True)
 
 
 class CombinedMediaDevice(MediaPlayerEntity):
-    """Representation of a MPD server."""
+    """Representation of a Number of Mudia Players server."""
 
     _attr_media_content_type = MediaType.MUSIC
     _children: list[str] = []
@@ -152,12 +161,14 @@ class CombinedMediaDevice(MediaPlayerEntity):
                 self._child_states[child_name] = state
 
             # _LOGGER.info(self.hass.states.get(child_name))
-
             child_state = STATES_ORDER_LOOKUP.get(
-                MediaPlayerState[self._child_states[child_name].state], 0
+                self._get_state_from_string(self._child_states[child_name].state), 0
             )
             current_state = STATES_ORDER_LOOKUP.get(
-                MediaPlayerState[self._child_states[highest_state_player].state], 0
+                self._get_state_from_string(
+                    self._child_states[highest_state_player].state
+                ),
+                0,
             )
 
             if child_state > current_state and child_state > STATES_ORDER_LOOKUP.get(
@@ -166,6 +177,12 @@ class CombinedMediaDevice(MediaPlayerEntity):
                 highest_state_player = child_name
 
             self._current_player = highest_state_player
+
+    def _get_state_from_string(self, value: str) -> MediaPlayerState:
+        if STRING_TO_STATE[value] is not None:
+            return STRING_TO_STATE[value]
+
+        return MediaPlayerState.OFF
 
     @property
     def _current_state(self) -> State:
@@ -179,7 +196,7 @@ class CombinedMediaDevice(MediaPlayerEntity):
     @property
     def state(self) -> MediaPlayerState:
         """Return the media state."""
-        return MediaPlayerState[self._current_state.state]
+        return self._get_state_from_string(self._current_state.state)
 
     @property
     def is_volume_muted(self) -> bool | None:

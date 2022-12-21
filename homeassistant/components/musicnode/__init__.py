@@ -3,14 +3,13 @@ from __future__ import annotations
 
 import logging
 
-import requests
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 
 from .const import DOMAIN
+from .musicnode_api import MusicnodeApi
 from .service import async_setup_services
 
 LOGGER = logging.getLogger(__name__)
@@ -39,8 +38,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         sw_version="1.0",
     )
 
+    api = MusicnodeApi(entry.data["host"], entry.data["port"])
+    hass.data[DOMAIN]["API"] = api
+
     await hass.async_add_executor_job(
-        async_send_screen_update, entry.data["host"], "Hassio Connected", ""
+        api.async_send_screen_update, "Hassio Connected", ""
     )
 
     # Services
@@ -50,14 +52,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
-
-
-def async_send_screen_update(host: str, line1: str, line2: str):
-    """Send the thing."""
-    mbody = {"Line1": line1, "Line2": line2}
-    api_response = requests.put(f"{host}/message", json=mbody, timeout=5000)
-
-    return api_response.ok
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
